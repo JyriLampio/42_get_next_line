@@ -55,8 +55,12 @@ char	*ft_line(char *buffer)
 	// Mee EOL:ään
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
+	if (buffer[i] == '\0')
+		line = ft_calloc(i + 1, sizeof(char));
+	else
+		line = ft_calloc(i + 2, sizeof(char));
 	// mallocaa EOL:ään asti
-	line = ft_calloc(i + 2, sizeof(char));
+	//line = ft_calloc(i + 1, sizeof(char));
 	if (!line)
 		return (NULL);
 	i = 0;
