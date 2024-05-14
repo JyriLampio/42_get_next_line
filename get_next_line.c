@@ -2,7 +2,7 @@
 
 #include "get_next_line.h"
 
-// join and free
+// joinaa ja vapauta muisti
 char	*ft_free(char *buffer, char *buf)
 {
 	char	*temp;
@@ -12,7 +12,7 @@ char	*ft_free(char *buffer, char *buf)
 	return (temp);
 }
 
-// delete line find
+// Poista jo etsitty line ja palauta loput
 char	*ft_next(char *buffer)
 {
 	int		i;
@@ -20,51 +20,50 @@ char	*ft_next(char *buffer)
 	char	*line;
 
 	i = 0;
-	// find len of first line
+	// Eti eka line
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
-	// if eol == \0 return NULL
+
 	if (!buffer[i])
 	{
 		free(buffer);
 		return (NULL);
 	}
-	// len of file - len of firstline + 1
+	// Filen length - ensimmäinen line + 1
 	line = ft_calloc((ft_strlen(buffer) - i + 1), sizeof(char));
 	i++;
 	j = 0;
-	// line == buffer
+
 	while (buffer[i])
 		line[j++] = buffer[i++];
 	free(buffer);
 	return (line);
 }
 
-// take line for return
+// Ota line palautukseen
 char	*ft_line(char *buffer)
 {
 	char	*line;
 	int		i;
 
 	i = 0;
-	// if no line return NULL
+	// Palauta Null jos ei ole lineä
 	if (!buffer[i])
 		return (NULL);
-	// go to the eol
+	// Mee EOL:ään
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
-	// malloc to eol
+	// mallocaa EOL:ään asti
 	line = ft_calloc(i + 2, sizeof(char));
 	i = 0;
-	// line = buffer
 	while (buffer[i] && buffer[i] != '\n')
 	{
 		line[i] = buffer[i];
 		i++;
 	}
-	// if eol is \0 or \n, replace eol by \n
-	if (buffer[i] && buffer[i] == '\n')
-		line[i++] = '\n';
+	// Jos EOL niin replacee newlinellä ja palauta
+	if (buffer[i])
+		line[i] = '\n';
 	return (line);
 }
 
@@ -73,12 +72,12 @@ char	*read_file(int fd, char *res)
 	char	*buffer;
 	int		byte_read;
 
-	// malloc if res dont exist
+	// malloc jos ressiä ei ole (Eka ajo)
 	if (!res)
 		res = ft_calloc(1, 1);
 	if (!res)
 		return (NULL);
-	// malloc buffer
+	// mallocaa bufferi
 	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	if (!buffer)
 	{
@@ -88,7 +87,7 @@ char	*read_file(int fd, char *res)
 	byte_read = 1;
 	while (byte_read > 0)
 	{
-		// while not eof read
+		// kunnes loppu
 		byte_read = read(fd, buffer, BUFFER_SIZE);
 		if (byte_read == -1)
 		{
@@ -96,11 +95,11 @@ char	*read_file(int fd, char *res)
 			free(res);
 			return (NULL);
 		}
-		// 0 to end for leak
+		// 0 loppuun vuotojen takia
 		buffer[byte_read] = 0;
-		// join and free
+		// Joinaa ja vapauta (Pieni bufferi)
 		res = ft_free(res, buffer);
-		// quit if \n find
+		// Lopeta jos löytyy newline
 		if (ft_strchr(buffer, '\n'))
 			break ;
 	}
@@ -113,10 +112,9 @@ char	*get_next_line(int fd)
 	static char	*buffer;
 	char		*line;
 
-	// error handling
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 	{
-		free(buffer);  // Ensure the buffer is freed in case of error
+		free(buffer);
         buffer = NULL;
 		return (NULL);
 	}
