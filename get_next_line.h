@@ -6,7 +6,7 @@
 /*   By: jyri <jyri@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 11:14:11 by jlampio           #+#    #+#             */
-/*   Updated: 2024/05/14 09:50:57 by jyri             ###   ########.fr       */
+/*   Updated: 2024/05/14 15:09:39 by jyri             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,10 @@
 # include <sys/types.h>
 # include <sys/uio.h>
 # include <unistd.h>
+
+#ifndef BUFFER_SIZE
+# define BUFFER_SIZE 42
+#endif
 
 char	*get_next_line(int fd);
 char	*ft_strjoin(char const *s1, char const *s2);
